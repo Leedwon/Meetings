@@ -6,4 +6,4 @@ This project is made for optimizing friend's meetings by allowing them to create
 
 ## App arcihtecture
 
-App uses BLOCs for architecture pattern.
+App uses BLOCs as architecture pattern.
