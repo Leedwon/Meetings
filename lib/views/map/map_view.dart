@@ -1,8 +1,10 @@
-import 'dart:async';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart';
+import 'package:meetings/models/services/map_api_service.dart';
+import 'package:meetings/widgets/LoadingWidget.dart';
+import 'package:meetings/widgets/MapWidget.dart';
+import 'bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-//import 'package:location/location.dart';
-import 'package:uuid/uuid.dart';
 
 class MapScreen extends StatefulWidget {
   MapScreen({Key key}) : super(key: key);
@@ -12,41 +14,37 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
-  static const LatLng _center = const LatLng(45.521563, -122.677433);
-  Completer<GoogleMapController> _controller = Completer();
- // Location location;
-  final Set<Marker> _markers = {};
+  static final String toolbarTitle = "Maps";
+  MapBloc _mapBloc;
 
   @override
   void initState() {
-   // location = Location();
-   // location.onLocationChanged().listen((LocationData currentLocation) {
-   //   setState(() {
-   //     _markers.add(Marker(markerId: MarkerId(Uuid().v1()),
-   //     position: LatLng(currentLocation.latitude, currentLocation.longitude)
-  //      ));
- //     });
-  //    print(currentLocation.latitude);
- //     print(currentLocation.longitude);
- //   });
+    _mapBloc = MapBloc(MapApiService(Client())); // refactor this no di madness
+    _mapBloc.dispatch(MapOpened());
     super.initState();
-  }
-  void _onMapCreated(GoogleMapController controller) {
-    _controller.complete(controller);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Maps")),
-        body: GoogleMap(
-      onMapCreated: _onMapCreated,
-      mapType: MapType.normal,
-      markers: _markers,
-      initialCameraPosition: CameraPosition(
-        target: _center,
-        zoom: 11.0,
+      appBar: AppBar(title: Text(toolbarTitle)),
+      body: BlocBuilder(
+        bloc: _mapBloc,
+        builder: (BuildContext context, MapState state) {
+          if (state is MarkersLoading) {
+            return LoadingWidget();
+          }
+          if (state is MarkersLoaded) {
+            return MapWidget(state.markers);
+          }
+        },
       ),
-    ));
+    );
+  }
+
+  @override
+  void dispose() {
+    _mapBloc.dispose();
+    super.dispose();
   }
 }
