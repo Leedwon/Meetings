@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart';
 import 'package:meetings/models/services/map_api_service.dart';
-import 'package:meetings/widgets/LoadingWidget.dart';
-import 'package:meetings/widgets/MapWidget.dart';
+import 'package:meetings/widgets/loading.dart';
+import 'package:meetings/widgets/map.dart';
 import 'bloc.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +19,7 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   void initState() {
-    _mapBloc = MapBloc(MapApiService(Client())); // refactor this no di madness
+    _mapBloc = MapBloc(MapApiService(Client())); //todo:: refactor this no di madness
     _mapBloc.dispatch(MapOpened());
     super.initState();
   }
@@ -30,6 +30,7 @@ class _MapScreenState extends State<MapScreen> {
       appBar: AppBar(title: Text(toolbarTitle)),
       body: BlocBuilder(
         bloc: _mapBloc,
+        // ignore: missing_return
         builder: (BuildContext context, MapState state) {
           if (state is MarkersLoading) {
             return LoadingWidget();

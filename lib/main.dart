@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meetings/views/logged_in/logged_in.dart';
 import 'package:meetings/views/login/login_view.dart';
 import 'package:meetings/views/map/map_view.dart';
 import 'package:meetings/views/register/regiser_view.dart';
@@ -14,6 +15,7 @@ class MyApp extends StatelessWidget {
         String currentRoute = settings.name;
 
         var routes = <String, WidgetBuilder> {
+          '/logged_in': (BuildContext context) => LoggedInScreen(),
           '/login': (BuildContext context) => LoginScreen(),
           '/register' : (BuildContext context) => RegisterScreen(),
           '/map' : (BuildContext context) => MapScreen(),

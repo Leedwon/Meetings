@@ -20,7 +20,11 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
     _apiService = UserApiService(_client);
     _loginBloc = LoginBloc(_apiService);
-    _loginBloc.openMap.listen((_) => Navigator.pushNamed(context, '/map'));
+    _loginBloc.loggedIn.listen((loggedIn) {
+      if (loggedIn) {
+        Navigator.pushReplacementNamed(context, '/logged_in');
+      }
+    });
   }
 
   @override
@@ -29,18 +33,30 @@ class _LoginScreenState extends State<LoginScreen> {
         appBar: AppBar(
           title: Text("Login"),
         ),
-        body: SingleChildScrollView(
-          child: Container(
-            margin: EdgeInsets.all(16.0),
-            child: Column(
-              children: <Widget>[
-                emailField(_loginBloc),
-                passwordField(_loginBloc),
-                submitButton(_loginBloc),
-                registerField(),
-              ],
-            ),
-          ),
+        body: Builder(
+          builder: (BuildContext context) {
+            _loginBloc.error.listen((element) {
+              if (element.isPresent) {
+                Scaffold.of(context).showSnackBar(SnackBar(
+                  content: Text(element.value),
+                  duration: const Duration(seconds: 3),
+                ));
+              }
+            });
+            return SingleChildScrollView(
+              child: Container(
+                margin: EdgeInsets.all(16.0),
+                child: Column(
+                  children: <Widget>[
+                    emailField(_loginBloc),
+                    passwordField(_loginBloc),
+                    submitButton(_loginBloc),
+                    registerField(),
+                  ],
+                ),
+              ),
+            );
+          },
         ));
   }
 
@@ -115,7 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
       padding: const EdgeInsets.only(bottom: 8.0),
       child: GestureDetector(
           onTap: () {
-            Navigator.pushNamed(context, '/register');
+            Navigator.pushReplacementNamed(context, '/register');
           },
           child: Text("Don't have account yet? register",
               style: TextStyle(color: Colors.blue))),

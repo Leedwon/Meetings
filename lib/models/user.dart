@@ -1,28 +1,26 @@
-import 'package:uuid/uuid.dart';
-
 class User {
-  final Uuid id;
+  final double id;
   final String email;
-  final String pseudonyme;
+  final String pseudonym;
   final String password;
 
   User(
     this.id,
     this.email,
-    this.pseudonyme,
+    this.pseudonym,
     this.password,
   );
 
   User.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         email = json['email'],
-        pseudonyme = json['pseudonyme'],
+        pseudonym = json['pseudonyme'], // typo in api
         password = json['password'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'email': email,
-        'pseudonyme': pseudonyme,
+        'pseudonyme': pseudonym, // typo in api
         'password': password
       };
 }

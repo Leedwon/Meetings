@@ -12,10 +12,22 @@
 ///       - asset: fonts/Meetings.ttf
 ///
 /// 
+/// * Material Design Icons, Copyright (C) Google, Inc
+///         Author:    Google
+///         License:   Apache 2.0 (https://www.apache.org/licenses/LICENSE-2.0)
+///         Homepage:  https://design.google.com/icons/
+/// * Typicons, (c) Stephen Hutchings 2012
+///         Author:    Stephen Hutchings
+///         License:   SIL (http://scripts.sil.org/OFL)
+///         Homepage:  http://typicons.com/
 /// * Elusive, Copyright (C) 2013 by Aristeides Stathopoulos
 ///         Author:    Aristeides Stathopoulos
 ///         License:   SIL (http://scripts.sil.org/OFL)
 ///         Homepage:  http://aristeides.com/
+/// * MFG Labs, Copyright (C) 2012 by Daniel Bruce
+///         Author:    MFG Labs
+///         License:   SIL (http://scripts.sil.org/OFL)
+///         Homepage:  http://www.mfglabs.com/
 ///
 import 'package:flutter/widgets.dart';
 
@@ -24,6 +36,10 @@ class Meetings {
 
   static const _kFontFam = 'Meetings';
 
-  static const IconData eye = const IconData(0xe800, fontFamily: _kFontFam);
-  static const IconData eye_off = const IconData(0xe801, fontFamily: _kFontFam);
+  static const IconData home = const IconData(0xe800, fontFamily: _kFontFam);
+  static const IconData beer = const IconData(0xe801, fontFamily: _kFontFam);
+  static const IconData search = const IconData(0xe802, fontFamily: _kFontFam);
+  static const IconData eye_off = const IconData(0xe803, fontFamily: _kFontFam);
+  static const IconData eye = const IconData(0xe804, fontFamily: _kFontFam);
+  static const IconData user = const IconData(0xf061, fontFamily: _kFontFam);
 }

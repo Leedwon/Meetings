@@ -22,6 +22,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.initState();
     _apiService = UserApiService(_client);
     _registerBloc = RegisterBloc(_apiService);
+    _registerBloc.registered.listen((registered) async {
+      if (registered) {
+        await showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (_) => AlertDialog(
+                  title: Text("Registration Succesful"),
+                  content: Text(
+                      "Thanks for creating an account you will be logged in now."),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text("Ok"),
+                      onPressed: () => Navigator.of(context).pop(),
+                    )
+                  ],
+                ));
+        Navigator.pushReplacementNamed(context, '/logged_in');
+      }
+    });
   }
 
   @override
@@ -30,18 +49,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
         appBar: AppBar(
           title: Text("Register"),
         ),
-        body: SingleChildScrollView(
-          child: Container(
-            margin: EdgeInsets.all(16.0),
-            child: Column(
-              children: <Widget>[
-                emailField(_registerBloc),
-                passwordField(_registerBloc),
-                submitButton(_registerBloc),
-                registerField()
-              ],
-            ),
-          ),
+        body: Builder(
+          builder: (BuildContext context) {
+            _registerBloc.error.listen((element) {
+              if (element.isPresent) {
+                Scaffold.of(context).showSnackBar(SnackBar(
+                  content: Text(element.value),
+                  duration: const Duration(seconds: 3),
+                ));
+              }
+            });
+            return SingleChildScrollView(
+              child: Container(
+                margin: EdgeInsets.all(16.0),
+                child: Column(
+                  children: <Widget>[
+                    emailField(_registerBloc),
+                    pseudonymField(_registerBloc),
+                    passwordField(_registerBloc),
+                    submitButton(_registerBloc),
+                    registerField()
+                  ],
+                ),
+              ),
+            );
+          },
         ));
   }
 
@@ -58,6 +90,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
             );
           }),
     );
+  }
+
+  Widget pseudonymField(RegisterBloc bloc) {
+    return Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: StreamBuilder(
+            stream: bloc.pseudonym,
+            builder: (context, snapshot) {
+              return TextField(
+                  onChanged: bloc.changePseudonym,
+                  decoration: InputDecoration(
+                      hintText: "Nickname", errorText: snapshot.error));
+            }));
   }
 
   Widget passwordField(RegisterBloc bloc) {
@@ -116,7 +161,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       padding: const EdgeInsets.only(bottom: 8.0),
       child: GestureDetector(
           onTap: () {
-            Navigator.pop(context);
+            Navigator.pushReplacementNamed(context, '/login');
           },
           child: Text("Have account already? Login",
               style: TextStyle(color: Colors.blue))),

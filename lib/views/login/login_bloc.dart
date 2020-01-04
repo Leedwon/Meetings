@@ -1,15 +1,18 @@
 import 'dart:async';
 
 import 'package:meetings/models/services/user_api_service.dart';
+import 'package:meetings/utils/shared_preferences_utils.dart';
+import 'package:quiver/core.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginBloc {
   final UserApiService userApiService;
 
   final _emailController = BehaviorSubject<String>();
-  final _emailFocusController = BehaviorSubject<bool>();
   final _passwordController = BehaviorSubject<String>();
-  final _openMapSubject = BehaviorSubject<bool>();
+  final _loggedInSubject = BehaviorSubject<bool>();
+  final _errorSubject = BehaviorSubject<Optional<String>>.seeded(Optional.absent());
 
   LoginBloc(this.userApiService);
 
@@ -32,15 +35,15 @@ class LoginBloc {
     }
   });
 
-  Stream<dynamic> get openMap => _openMapSubject.stream;
+  Stream<bool> get loggedIn => _loggedInSubject.stream;
+
+  Stream<Optional<String>> get error => _errorSubject.stream;
 
   Stream<String> get email =>
       _emailController.stream.transform(emailErrorTransformer);
 
   Stream<String> get password =>
     _passwordController.stream.transform(passwordErrorTransformer);
-
-  Function(bool) get changeEmailFocus => _emailFocusController.sink.add;
 
   Function(String) get changeEmail => _emailController.sink.add;
 
@@ -52,16 +55,23 @@ class LoginBloc {
       (String email, String password) =>
           email.length >=0 && email.contains('@') && password.length >= 6);
 
-  submit() {
+  submit () async {
     print("submited");
-    _openMapSubject.sink.add(true);
-    //todo:: perform logging
+    userApiService.login(_emailController.value, _passwordController.value)
+    .then((id) async {
+      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      sharedPreferences.setDouble(USER_ID, id);
+      _loggedInSubject.sink.add(true);
+    })
+    .catchError((error) {
+      _errorSubject.sink.add(Optional.of(error.toString()));
+    });
   }
 
   dispose() {
     _emailController.close();
     _passwordController.close();
-    _emailFocusController.close();
-    _openMapSubject.close();
+    _loggedInSubject.close();
+    _errorSubject.close();
   }
 }
