@@ -1,23 +1,24 @@
 import 'dart:async';
 
 import 'package:meetings/models/services/user_api_service.dart';
-import 'package:meetings/utils/shared_preferences_utils.dart';
 import 'package:quiver/core.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginBloc {
+import '../base_bloc.dart';
+
+class LoginBloc extends BaseBloc {
   final UserApiService userApiService;
 
   final _emailController = BehaviorSubject<String>();
   final _passwordController = BehaviorSubject<String>();
   final _loggedInSubject = BehaviorSubject<bool>();
-  final _errorSubject = BehaviorSubject<Optional<String>>.seeded(Optional.absent());
+  final _errorSubject = BehaviorSubject<Optional<String>>.seeded(
+      Optional.absent());
 
   LoginBloc(this.userApiService);
 
   final emailErrorTransformer =
-      StreamTransformer<String, String>.fromHandlers(handleData: (email, sink) {
+  StreamTransformer<String, String>.fromHandlers(handleData: (email, sink) {
     if (email.contains('@')) {
       sink.add(email);
     } else {
@@ -26,14 +27,14 @@ class LoginBloc {
   });
 
   final passwordErrorTransformer =
-      StreamTransformer<String, String>.fromHandlers(
-          handleData: (password, sink) {
-    if (password.length >= 6) {
-      sink.add(password);
-    } else {
-      sink.addError('Password must contains at least 6 characters');
-    }
-  });
+  StreamTransformer<String, String>.fromHandlers(
+      handleData: (password, sink) {
+        if (password.length >= 6) {
+          sink.add(password);
+        } else {
+          sink.addError('Password must contains at least 6 characters');
+        }
+      });
 
   Stream<bool> get loggedIn => _loggedInSubject.stream;
 
@@ -43,31 +44,37 @@ class LoginBloc {
       _emailController.stream.transform(emailErrorTransformer);
 
   Stream<String> get password =>
-    _passwordController.stream.transform(passwordErrorTransformer);
+      _passwordController.stream.transform(passwordErrorTransformer);
 
   Function(String) get changeEmail => _emailController.sink.add;
 
   Function(String) get changePassword => _passwordController.sink.add;
 
-  Stream<bool> get isValid => Observable.combineLatest2(
-      _emailController,
-      _passwordController,
-      (String email, String password) =>
-          email.length >=0 && email.contains('@') && password.length >= 6);
+  void errorHandled() {
+    _errorSubject.sink.add(Optional.absent());
+  }
 
-  submit () async {
+  Stream<bool> get isValid =>
+      Observable.combineLatest2(
+          _emailController,
+          _passwordController,
+              (String email, String password) =>
+          email.length >= 0 && email.contains('@') && password.length >= 6);
+
+  submit() async {
     print("submited");
     userApiService.login(_emailController.value, _passwordController.value)
-    .then((id) async {
-      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-      sharedPreferences.setDouble(USER_ID, id);
+        .then((id) async {
+      setUserId(id);
       _loggedInSubject.sink.add(true);
     })
-    .catchError((error) {
+        .catchError((error) {
       _errorSubject.sink.add(Optional.of(error.toString()));
     });
   }
 
+
+  @override
   dispose() {
     _emailController.close();
     _passwordController.close();

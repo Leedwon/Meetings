@@ -41,6 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   content: Text(element.value),
                   duration: const Duration(seconds: 3),
                 ));
+                _loginBloc.errorHandled();
               }
             });
             return SingleChildScrollView(

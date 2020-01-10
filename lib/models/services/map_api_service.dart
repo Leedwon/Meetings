@@ -1,9 +1,10 @@
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
+import 'package:meetings/utils/network_utils.dart';
 
 class MapApiService{
   final Client client;
-  final String url = "my_awesome_url";
+  final String url = "$BASE_URL";
 
   MapApiService(this.client);
 

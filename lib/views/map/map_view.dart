@@ -19,9 +19,9 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   void initState() {
+    super.initState();
     _mapBloc = MapBloc(MapApiService(Client())); //todo:: refactor this no di madness
     _mapBloc.dispatch(MapOpened());
-    super.initState();
   }
 
   @override
