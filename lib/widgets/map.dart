@@ -28,7 +28,7 @@ class _MapWidgetState extends State<MapWidget> {
     return GoogleMap(
         onMapCreated: _onMapCreated,
         initialCameraPosition:
-            CameraPosition(target: widget.markers[0], zoom: 11.0),
+            CameraPosition(target: widget.markers[0], zoom: 16.0),
         markers: widget.markers
             .map((latLng) => _mapLatLngToMarker(latLng))
             .toSet()

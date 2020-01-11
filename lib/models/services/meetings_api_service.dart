@@ -21,4 +21,15 @@ class MeetingsApiService {
       return Future.error("error while getting user meetings");
     }
   }
+
+  Future<bool> createMeeting(
+      int hostId, String startingTime, int placeId, String name) async {
+    final response = await client.get(
+        "$url/post/createMeeting?hostid=$hostId&placeid=$placeId&description=$name&startingtime=$startingTime");
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return Future.error("couldn't create meeting");
+    }
+  }
 }
