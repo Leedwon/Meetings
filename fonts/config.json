@@ -1,0 +1,46 @@
+{
+  "name": "Meetings",
+  "css_prefix_text": "",
+  "css_use_suffix": false,
+  "hinting": true,
+  "units_per_em": 1000,
+  "ascent": 850,
+  "glyphs": [
+    {
+      "uid": "11d74f891bce30f1bdf73d3259d59ed5",
+      "css": "user",
+      "code": 61537,
+      "src": "mfglabs"
+    },
+    {
+      "uid": "ca150bc10f3a816413c7687c59dbe118",
+      "css": "home",
+      "code": 59392,
+      "src": "material"
+    },
+    {
+      "uid": "c2e02247804b8372740de0b76311f1ad",
+      "css": "beer",
+      "code": 59393,
+      "src": "typicons"
+    },
+    {
+      "uid": "4d0e0a48ab862e68143543174c68c45e",
+      "css": "eye_off",
+      "code": 59395,
+      "src": "material"
+    },
+    {
+      "uid": "1fa886ec7daec6fd948b7c83064b9bdc",
+      "css": "eye",
+      "code": 59396,
+      "src": "material"
+    },
+    {
+      "uid": "e45e9f27ce40ba9837cc984076d98067",
+      "css": "search",
+      "code": 59394,
+      "src": "elusive"
+    }
+  ]
+}
