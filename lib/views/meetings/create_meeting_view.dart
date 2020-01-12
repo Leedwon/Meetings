@@ -47,7 +47,7 @@ class _CreateMeetingScreenState extends State<CreateMeetingScreen> {
           });
           _createMeetingBloc.meetingAdded.listen((added) {
             if (added.isPresent) {
-              Navigator.of(context).pop(MEETING_ADDED);
+              Navigator.of(context).pop(REFRESH);
               Scaffold.of(context).showSnackBar(SnackBar(
                 content: Text("Meeting created"),
                 duration: const Duration(seconds: 3),

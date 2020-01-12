@@ -9,6 +9,7 @@ import 'package:meetings/widgets/loading.dart';
 import 'package:meetings/widgets/place_rating.dart';
 import 'package:meetings/widgets/spacing_widget.dart';
 
+import '../../post_location_service.dart';
 import 'home_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -20,6 +21,7 @@ var cardAspectRatio = 12.0 / 16.0;
 var widgetAspectRatio = cardAspectRatio * 1.2;
 
 class _HomeScreenState extends State<HomeScreen> {
+  PostLocationService postLocationService;
   var currentPage = images.length - 1.0;
   HomeBloc _homeBloc;
 
@@ -27,6 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     Client client = Client();
+    PostLocationService.init();
     _homeBloc = HomeBloc(PlaceApiService(client), RatingApiService(client));
     _homeBloc.subscribeToSearchQuery();
   }

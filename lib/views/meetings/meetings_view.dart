@@ -8,7 +8,7 @@ import 'package:meetings/widgets/loading.dart';
 
 import 'meetings_bloc.dart';
 
-const String MEETING_ADDED = "meeting-added";
+const String REFRESH = "referesh";
 
 class MeetingsScreen extends StatefulWidget {
   //todo:: ugly solution refactor
@@ -61,7 +61,12 @@ class _MeetingsScreenState extends State<MeetingsScreen> {
               itemBuilder: (BuildContext context, int index) {
                 final MeetingItem item = meetings[index];
                 return InkWell(
-                  onTap: () => {print("tapped")},
+                  onTap: () async {
+                    var result = await Navigator.pushNamed(context, "/meetingDetails", arguments: [item.id]);
+                    if (result == REFRESH) {
+                      _meetingBloc.fetchMeetings();
+                    }
+                  },
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -91,7 +96,7 @@ class _MeetingsScreenState extends State<MeetingsScreen> {
           child: Icon(Icons.add, color: Colors.white),
           onPressed: () async {
             var result = await Navigator.pushNamed(context, "/addMeeting");
-            if (result == MEETING_ADDED) {
+            if (result == REFRESH) {
               _meetingBloc.fetchMeetings();
             }
           }),

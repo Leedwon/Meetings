@@ -9,13 +9,14 @@ import 'package:rxdart/rxdart.dart';
 import '../base_bloc.dart';
 
 class MeetingItem {
+  final int id;
   final String hostPseudonym;
   final String placeName;
   final String description;
   final DateTime startingTime;
 
   MeetingItem(
-      this.hostPseudonym, this.placeName, this.description, this.startingTime);
+      this.id, this.hostPseudonym, this.placeName, this.description, this.startingTime);
 }
 
 class MeetingsBloc extends BaseBloc {
@@ -51,6 +52,7 @@ class MeetingsBloc extends BaseBloc {
         List<MeetingItem> items = List();
         for (int i = 0; i < meetings.length; ++i) {
           items.add(MeetingItem(
+              meetings[i].id,
               hosts[i].pseudonym,
               places[i].name,
               meetings[i].description,

@@ -56,4 +56,13 @@ class UserApiService {
       return Future.error("Couldn't find user with given id");
     }
   }
+
+  Future<bool> updateLocalization(int userId, double latitude, double longitude) async {
+    final response = await client.get("$url/put/updateLocalization?id=$userId&latitude=$latitude&longitude=$longitude");
+    if(response.statusCode == 200){
+      return true;
+    } else {
+      return Future.error("couldn't update localization");
+    }
+  }
 }

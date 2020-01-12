@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meetings/common/destination.dart';
 import 'package:meetings/views/home/home_view.dart';
-import 'package:meetings/views/map/map_view.dart';
 import 'package:meetings/views/meetings/meetings_view.dart';
 import 'package:meetings/views/profile/profile_view.dart';
 

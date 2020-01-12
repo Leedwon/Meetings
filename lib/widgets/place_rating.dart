@@ -30,7 +30,7 @@ class PlaceRatingWidget extends StatelessWidget {
           children: <Widget>[
             Text(
               _placeRating.name,
-              style: TextStyle(fontSize: 20.0),
+              style: TextStyle(fontSize: 14.0),
             ),
             RatingBar(
               onRatingUpdate: (_) => {},

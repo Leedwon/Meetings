@@ -82,7 +82,7 @@ class CreateMeetingBloc extends BaseBloc {
         });
         // check here because it is async so it will work with fast deleting as well
         list.first.then((items) {
-          if(_searchQuerySubject.value.isEmpty){
+          if (_searchQuerySubject.value.isEmpty) {
             _placesSubject.sink.add(List());
           } else {
             _placesSubject.sink.add(items);
@@ -132,7 +132,7 @@ class CreateMeetingBloc extends BaseBloc {
 
     String startingTime = date.toIso8601String();
     int placeId = place.value.placeId;
-    String name = place.value.name;
+    String name = _meetingsName.value;
 
     _meetingsApiService
         .createMeeting(hostId, startingTime, placeId, name)
