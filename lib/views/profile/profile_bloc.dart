@@ -101,7 +101,7 @@ class ProfileBloc extends BaseBloc {
     await _friendsApiService.removeFriendship(id, email)
         .then((value) async {
       _fetchFriendsAndSetState(id, currentState.pseudonym, currentState.email);
-    }).catchError((error) => _snackbarSubject.sink.add(Optional.of(error)));
+    }).catchError((error) => _snackbarSubject.sink.add(Optional.of(error.toString())));
   }
 
   void _fetchFriendsAndSetState(int id, String pseudonym, String email) async {
@@ -113,7 +113,7 @@ class ProfileBloc extends BaseBloc {
           error: null,
           loading: false,
           buttonLoading: false)));
-    }).catchError((error) => _snackbarSubject.sink.add(Optional.of(error)));
+    }).catchError((error) => _snackbarSubject.sink.add(Optional.of(error.toString())));
   }
 
   @override

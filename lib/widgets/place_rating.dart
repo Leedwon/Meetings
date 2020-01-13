@@ -25,22 +25,29 @@ class PlaceRatingWidget extends StatelessWidget {
             border: Border.all(
                 color: _placeRating.selected ? Colors.blue : Colors.black),
             borderRadius: BorderRadius.all(Radius.circular(10.0))),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+        child: Column(
           children: <Widget>[
-            Text(
-              _placeRating.name,
-              style: TextStyle(fontSize: 14.0),
-            ),
-            RatingBar(
-              onRatingUpdate: (_) => {},
-              itemBuilder: (context, _) => Icon(
-                Icons.star,
-                color: Colors.amber,
+            Padding(
+              padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 0.0),
+              child: Text(
+                _placeRating.name,
+                style: TextStyle(fontSize: 20.0),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
-              ignoreGestures: true,
-              initialRating: _placeRating.rating,
-              allowHalfRating: false,
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
+              child: RatingBar(
+                onRatingUpdate: (_) => {},
+                itemBuilder: (context, _) => Icon(
+                  Icons.star,
+                  color: Colors.amber,
+                ),
+                ignoreGestures: true,
+                initialRating: _placeRating.rating,
+                allowHalfRating: false,
+              ),
             )
           ],
         ),

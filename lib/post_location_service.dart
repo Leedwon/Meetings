@@ -14,6 +14,7 @@ class PostLocationService {
       UserApiService userApiService = UserApiService(Client());
       location.requestPermission().then((granted) {
         if (granted) {
+          location.changeSettings(accuracy: LocationAccuracy.BALANCED);
           location.onLocationChanged().listen((location) async {
             if (_currentLocation == null ||
                 _currentLocation.didLatLngChange(location)) {
