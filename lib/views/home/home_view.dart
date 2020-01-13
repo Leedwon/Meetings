@@ -110,6 +110,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   )
                                 ],
                               ),
+                              InkWell(onTap: () => _homeBloc.getAllMeetings(),
+                              child: Text("see all", style: TextStyle(color: Colors.blue, fontSize: 24.0),))
                             ],
                           ),
                         );

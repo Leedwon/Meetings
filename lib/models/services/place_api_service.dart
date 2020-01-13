@@ -40,4 +40,18 @@ class PlaceApiService {
       return Future.error("no place with given name");
     }
   }
+
+  Future<List<Place>> getAllPlaces() async {
+    final response = await client.get("$url/get/all");
+    if (response.statusCode == 200) {
+      List<dynamic> decodedJson = jsonDecode(response.body);
+      return decodedJson.map<Place>((json) {
+        return Place.fromJson(json);
+      }).toList();
+    } else {
+      return Future.error("no place with given name");
+    }
+  }
+
+
 }

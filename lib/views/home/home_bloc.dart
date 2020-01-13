@@ -66,6 +66,31 @@ class HomeBloc extends BaseBloc {
     }
   }
 
+  void getAllMeetings() async {
+    Future<List<double>> ratingsFuture;
+    Future<List<Place>> placesFuture;
+    placesFuture = _placeApiService.getAllPlaces();
+    _placeApiService.getAllPlaces().then((places) {
+      ratingsFuture = Future.wait(places.map((place) {
+        return _ratingApiService.getAvgRating(place.id);
+      }));
+      var list =
+          ZipStream.zip2(ratingsFuture.asStream(), placesFuture.asStream(),
+              (List<double> ratings, List<Place> places) {
+        List<PlaceRatingItem> items = List();
+        for (int i = 0; i < places.length; ++i) {
+          items.add(
+              PlaceRatingItem(places[i].id, places[i].name, ratings[i], false));
+        }
+        return items;
+      });
+      list.first.then((items) {
+        // check here because it is async so it will work with fast dele
+        _placesSubject.sink.add(items);
+      });
+    });
+  }
+
   @override
   void dispose() {
     _placesSubject.close();
